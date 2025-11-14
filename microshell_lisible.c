@@ -1,3 +1,8 @@
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
 
 void	error(char *s)
 {
@@ -86,7 +91,7 @@ int main(int ac, char **av, char **envp)
 
 	while (av[i])
 	{
-		av += i + 1;
+		av = &av[i + 1];
 		i = 0;
 
 		while (av[i] && strcmp(av[i], "|") && strcmp(av[i], ";"))
