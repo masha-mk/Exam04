@@ -51,7 +51,7 @@ int	exec(char **av, int i, char **envp)
 	int		has_pipe;
 
 	has_pipe = (av[i] && !strcmp(av[i], "|"));
-	if (!has_pipe && !strcmp(*av, "cd"))
+	if (!has_pipe && !strcmp(av[0], "cd"))
 		return (cd(av, i));
 	if (has_pipe && pipe(fd) == -1)
 	{
@@ -68,11 +68,11 @@ int	exec(char **av, int i, char **envp)
 	{
 		av[i] = 0;
 		set_pipe(has_pipe, fd, 1);
-		if (!strcmp(*av, "cd"))
+		if (!strcmp(av[0], "cd"))
 			exit(cd(av, i));
-		execve(*av, av, envp);
+		execve(av[0], av, envp);
 		error("error: cannot execute ");
-		error(*av);
+		error(av[0]);
 		error("\n");
 		exit(1);
 	}
@@ -100,6 +100,5 @@ int main(int ac, char **av, char **envp)
 		if (i)
 			ret = exec(av, i, envp);
 	}
-
 	return ret;
 }
